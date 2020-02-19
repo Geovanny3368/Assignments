@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.event.ActionEvent;	//**Need to import
 import javafx.event.EventHandler;	//**Need to import
 
@@ -18,11 +19,13 @@ import javafx.event.EventHandler;	//**Need to import
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 
 //----
 
@@ -47,11 +50,12 @@ public class CreatePane extends HBox
         //and set up the layout
         //----
 	
-		title = new Label("Title: ");
-		numOfMembers = new Label("Number of Members: ");
-		university = new Label("University: ");
+		title = new Label("Title ");
+		numOfMembers = new Label("Number of Members ");
+		university = new Label("University ");
 		
 		titleField = new TextField();
+		
 		memberField = new TextField();
 		uniField = new TextField();
 		
@@ -60,42 +64,62 @@ public class CreatePane extends HBox
         //create a GridPane hold those labels & text fields.
         //you can choose to use .setPadding() or setHgap(), setVgap()
         //to control the spacing and gap, etc.
-        //----
-        
+        //----       
         GridPane leftPane = new GridPane();
-        leftPane.setAlignment(Pos.CENTER);      //Grid always centered 
-        leftPane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
-        leftPane.setHgap(5.5);
-        leftPane.setVgap(5.5);
+        leftPane.setPrefSize(400, 400);
+        leftPane.setAlignment(Pos.TOP_CENTER);      //Grid always centered 
+        leftPane.setPadding(new Insets(35, 35, 0, 0));
+        leftPane.setHgap(10);
+        leftPane.setVgap(5);
             
         //You might need to create a sub pane to hold the button
         //----
-        GridPane.setHalignment(crtClub, HPos.LEFT);
+//        TilePane downPane = new TilePane(Orientation.HORIZONTAL);
+//        downPane.setAlignment(Pos.CENTER);
+//        downPane.setPadding(new Insets(0, 0, 0, 0)); 
+//        downPane.setVgap(10.0); 
+//        
+//        FlowPane southPane = new FlowPane();
+//        southPane.setVgap(10);
+//        southPane.setHgap(10);
+//        
+//        StackPane belowPane = new StackPane();
+//        belowPane.getChildren().add(crtClub);
         
+        GridPane.setHalignment(crtClub, HPos.CENTER);
+        GridPane.setValignment(crtClub, VPos.TOP);
+        
+//        HBox hBoxPane = new HBox();
+//        hBoxPane.setAlignment(Pos.BOTTOM_LEFT);
+//        hBoxPane.setPadding(new Insets(10, 50, 10, 10));
         //sets the size of the button
-        crtClub.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        //crtClub.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//        crtClub.setAlignment(Pos.CENTER_LEFT);
         
+        //sets the spacing for hBoxPane
+//        hBoxPane.setSpacing(10);
+//        hBoxPane.setMinSize(50, 50);
+                         
         //Set up the layout for the left half of the CreatePane.
-        //----
-        
-        //first row
+        //----        
         leftPane.add(title, 0, 0);
         leftPane.add(titleField, 1, 0);
         
-        //second row
         leftPane.add(numOfMembers, 0, 1);
         leftPane.add(memberField, 1, 1);
         
-        //third row
         leftPane.add(university, 0, 2);
         leftPane.add(uniField, 1, 2);
         
-        leftPane.add(crtClub, 1, 5);
+        leftPane.add(crtClub, 0, 3, 2, 5);
         
-        clubDispaly = new TextArea("No Club");
-        
-        
-        this.getChildren().addAll(leftPane, clubDispaly);
+//        leftPane.add(belowPane, 2, 5, 2, 1);
+//            
+//        downPane.getChildren().add(crtClub);
+//        southPane.getChildren().add(crtClub);
+//        hBoxPane.getChildren().add(crtClub);
+//        
+
         //the right half of the CreatePane is simply a TextArea object
         //Note: a ScrollPane will be added to it automatically when there are no
         //enough space
@@ -103,16 +127,15 @@ public class CreatePane extends HBox
         //Add the left half and right half to the CreatePane
         //Note: CreatePane extends from HBox
         //----
+        clubDispaly = new TextArea("No Club");
+        clubDispaly.setPrefWidth(500);  
         
+        this.getChildren().addAll(leftPane, clubDispaly);
         //register/link source object with event handler
         //----
 
 	} //end of constructor
 
-    private static void setLeft(GridPane pane) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	//Create a ButtonHandler class
     //ButtonHandler listens to see if the button "Create" is pushed or not,
