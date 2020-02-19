@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.event.ActionEvent;	//**Need to import
 import javafx.event.EventHandler;	//**Need to import
 
@@ -19,6 +20,7 @@ import javafx.event.EventHandler;	//**Need to import
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.HPos;
@@ -35,9 +37,9 @@ public class CreatePane extends HBox
 
     //The relationship between CreatePane and SelectPane is Aggregation
     private SelectPane selectPane;
-    private Label title, numOfMembers, university;
+    private Label title, numOfMembers, university, warning;
 	private TextField titleField, memberField, uniField;
-	private Button crtClub;
+	private Button clubBtn;
 	private TextArea clubDispaly;
     
 	//constructor
@@ -49,76 +51,62 @@ public class CreatePane extends HBox
         //initialize each instance variable (textfields, labels, textarea, button, etc.)
         //and set up the layout
         //----
-	
-		title = new Label("Title ");
-		numOfMembers = new Label("Number of Members ");
-		university = new Label("University ");
+		warning = new Label("");
+		warning.setTextFill(Color.RED);
 		
-		titleField = new TextField();
+		//set up for labels
+		title = new Label("Title");
+		numOfMembers = new Label("Number of Members");
+		university = new Label("University");
 		
+		//set up for text fields
+		titleField = new TextField();		
 		memberField = new TextField();
 		uniField = new TextField();
 		
-		crtClub = new Button("Create a Club");
+		//Button
+		clubBtn = new Button("Create a Club");
         
         //create a GridPane hold those labels & text fields.
         //you can choose to use .setPadding() or setHgap(), setVgap()
         //to control the spacing and gap, etc.
         //----       
-        GridPane leftPane = new GridPane();
-        leftPane.setPrefSize(400, 400);
-        leftPane.setAlignment(Pos.TOP_CENTER);      //Grid always centered 
-        leftPane.setPadding(new Insets(35, 35, 0, 0));
-        leftPane.setHgap(10);
-        leftPane.setVgap(5);
+        GridPane centerPane = new GridPane();
+        //centerPane.setPrefSize(100, 200);
+        centerPane.setAlignment(Pos.TOP_CENTER);      //Grid always centered 
+        centerPane.setPadding(new Insets(10, 10, 0, 0));
+        centerPane.setHgap(5);
+        centerPane.setVgap(5);
             
         //You might need to create a sub pane to hold the button
         //----
-//        TilePane downPane = new TilePane(Orientation.HORIZONTAL);
-//        downPane.setAlignment(Pos.CENTER);
-//        downPane.setPadding(new Insets(0, 0, 0, 0)); 
-//        downPane.setVgap(10.0); 
-//        
-//        FlowPane southPane = new FlowPane();
-//        southPane.setVgap(10);
-//        southPane.setHgap(10);
-//        
-//        StackPane belowPane = new StackPane();
-//        belowPane.getChildren().add(crtClub);
+
+        centerPane.add(title, 0, 0);
+        centerPane.add(titleField, 1, 0);
         
-        GridPane.setHalignment(crtClub, HPos.CENTER);
-        GridPane.setValignment(crtClub, VPos.TOP);
+        centerPane.add(numOfMembers, 0, 1);
+        centerPane.add(memberField, 1, 1);
         
-//        HBox hBoxPane = new HBox();
-//        hBoxPane.setAlignment(Pos.BOTTOM_LEFT);
-//        hBoxPane.setPadding(new Insets(10, 50, 10, 10));
-        //sets the size of the button
-        //crtClub.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-//        crtClub.setAlignment(Pos.CENTER_LEFT);
+        centerPane.add(university, 0, 2);
+        centerPane.add(uniField, 1, 2);
+              
+        FlowPane bottomPane = new FlowPane();
+        bottomPane.getChildren().add(clubBtn);
+        bottomPane.setAlignment(Pos.TOP_CENTER);
+        bottomPane.setPadding(new Insets(10, 50, 50, 10));
+        bottomPane.setPrefHeight(250);
+        bottomPane.setVgap(0);
+        bottomPane.setHgap(10);
         
-        //sets the spacing for hBoxPane
-//        hBoxPane.setSpacing(10);
-//        hBoxPane.setMinSize(50, 50);
-                         
-        //Set up the layout for the left half of the CreatePane.
-        //----        
-        leftPane.add(title, 0, 0);
-        leftPane.add(titleField, 1, 0);
-        
-        leftPane.add(numOfMembers, 0, 1);
-        leftPane.add(memberField, 1, 1);
-        
-        leftPane.add(university, 0, 2);
-        leftPane.add(uniField, 1, 2);
-        
-        leftPane.add(crtClub, 0, 3, 2, 5);
-        
-//        leftPane.add(belowPane, 2, 5, 2, 1);
-//            
-//        downPane.getChildren().add(crtClub);
-//        southPane.getChildren().add(crtClub);
-//        hBoxPane.getChildren().add(crtClub);
-//        
+        FlowPane topPane = new FlowPane();
+        topPane.getChildren().add(warning);
+        topPane.setAlignment(Pos.BOTTOM_LEFT);
+        topPane.setPadding(new Insets(5, 0, 0, 10));
+                
+        BorderPane leftPane = new BorderPane();
+        leftPane.setTop(topPane);
+        leftPane.setCenter(centerPane);
+        leftPane.setBottom(bottomPane);
 
         //the right half of the CreatePane is simply a TextArea object
         //Note: a ScrollPane will be added to it automatically when there are no
@@ -133,6 +121,8 @@ public class CreatePane extends HBox
         this.getChildren().addAll(leftPane, clubDispaly);
         //register/link source object with event handler
         //----
+        ButtonHandler btnHandler = new ButtonHandler();
+        clubBtn.setOnAction(btnHandler);
 
 	} //end of constructor
 
@@ -152,6 +142,10 @@ public class CreatePane extends HBox
         {
             //declare any necessary local variables here
             //---
+   	    	String title, university;
+   	    	String clubListStr = "";
+   	    	int numOfMembers;
+   	    	
             
             //when a text field is empty and the button is pushed
             //if ( //----  )
@@ -178,6 +172,49 @@ public class CreatePane extends HBox
                     //----
                     
                 //}
+   	    	
+   	    	if (titleField.getText().isEmpty() || memberField.getText().isEmpty()
+   	    			|| uniField.getText().isEmpty()) {
+   	    		warning.setText("Please fill in all fields");
+			}else {
+				
+				try {
+							
+			        //when a non-numeric value was entered for its number of members
+			        //and the button is pushed
+			        //you will need to use try & catch block to catch
+			        //the NumberFormatException
+			        //----
+					
+					title = titleField.getText();
+					numOfMembers = Integer.parseInt(memberField.getText());
+					university = uniField.getText();
+					
+					Club createClub = new Club();
+					createClub.setClubName(title);
+					createClub.setNumberOfMembers(numOfMembers);
+					createClub.setUniversity(university);
+					clubList.add(createClub);
+					
+					for (int i = 0; i < clubList.size(); i++) {
+						
+						clubListStr += clubList.get(i).toString();
+					}
+					
+					clubDispaly.setText(clubListStr);
+					
+					selectPane.updateClubList(createClub);
+					
+					warning.setText("Club added");
+					
+					
+					
+					
+					
+				}catch(NumberFormatException e){
+					warning.setText("Please enter an integer for a number of members");
+				}
+			}
 
       } //end of handle() method
    } //end of ButtonHandler class

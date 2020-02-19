@@ -6,29 +6,55 @@
 //  from which a user can select and compute their total number of members.
 
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;	//**Need to import
 import javafx.event.EventHandler;	//**Need to import
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+
 
 //import all other necessary javafx classes here
 //----
 
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ToggleGroup;
+
+
 public class SelectPane extends BorderPane
 {
    private ArrayList<Club> clubList;
+   private ObservableList<Club> arrList;
+   private ListView<Club> clubListView;
+   
+   private CheckBox checkBox;
+   private ToggleGroup groupBox;
 
    //constructor
    public SelectPane(ArrayList<Club> list)
    {
    	   //initialize instance variables
        this.clubList = list;
+       checkBox = new CheckBox();
        
        //set up the layout
        //----
+       arrList = FXCollections.observableArrayList(clubList);
+       clubListView = new ListView<Club>(arrList);
+       
+       
+       GridPane pane = new GridPane();
+       pane.setAlignment(Pos.CENTER);
+       pane.getChildren().add(checkBox);
+       
+      
+       
        
     
        //create an empty pane where you can add check boxes later
@@ -37,6 +63,11 @@ public class SelectPane extends BorderPane
        
        //SelectPane is a BorderPane - add the components here
        //----
+       BorderPane finalPane = new BorderPane();
+       finalPane.setCenter(pane);
+       
+       
+       this.getChildren().add(finalPane);
        
 
        
@@ -48,6 +79,7 @@ public class SelectPane extends BorderPane
  public void updateClubList(Club newClub)
  {
      //-------
+	 arrList.add(newClub);
  }
 
  //create a SelectionHandler class
