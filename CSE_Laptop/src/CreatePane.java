@@ -207,11 +207,8 @@ public class CreatePane extends HBox
 					
 					warning.setText("Club added");
 					
-					
-					
-					
-					
-				}catch(NumberFormatException e){
+			}catch(NumberFormatException e){
+				
 					warning.setText("Please enter an integer for a number of members");
 				}
 			}
