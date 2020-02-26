@@ -32,9 +32,12 @@ import javafx.scene.control.ToggleGroup;
 public class SelectPane extends BorderPane
 {
 	private Label clubLable;
+	private Label newClubLable;
 	private int totalMembers;
 	private ArrayList<Club> clubList;
 	private ArrayList<CheckBox> checkList;
+	private CheckBox newBox;
+	private VBox	verticalBox;
 
 
    //constructor
@@ -44,10 +47,10 @@ public class SelectPane extends BorderPane
    	   //initialize instance variables
        this.clubList = list;
        
-       clubList = new ArrayList<Club>();
        checkList = new ArrayList<CheckBox>();
        totalMembers = 0;
-       clubLable = new Label("Total amt: " + totalMembers);
+       clubLable = new Label("Select some clubs");
+       newClubLable = new Label("Total: " + totalMembers);
 
        //set up the layout
        //----
@@ -55,24 +58,18 @@ public class SelectPane extends BorderPane
          
        //create an empty pane where you can add check boxes later
        //----
-       VBox checkPane = new VBox();
-       checkPane.setSpacing(20);
+       this.verticalBox = new VBox();
+//       checkPane.setSpacing(20);
 //       checkPane.getChildren().add(updateClubList(newClub);)
 
+
        
-//       for (int i = 0; i < list.size(); i++) {
-//    	   
-//    	   CheckBox cb = new CheckBox(list.get(i).toString());
-//    	   checkList.add(cb);
-//    	   checkPane.getChildren().add(cb);
-//    	   		
-//	}
-//       
        //SelectPane is a BorderPane - add the components here
        //----
        
        this.setTop(clubLable);
-       this.setCenter(checkPane);
+       this.setLeft(verticalBox);
+       this.setBottom(newClubLable);
 
        
               
@@ -85,20 +82,14 @@ public class SelectPane extends BorderPane
    public void updateClubList(Club newClub)
  {
      //-------
-//	 CheckBox newBox = new CheckBox(newClub.toString());
-//	 this.setLeft(newBox);
-	 
-	    for (int i = 0; i < clubList.size(); i++) {
-	    	   
-	    	   CheckBox cb = new CheckBox(newClub.toString());
-	    	   checkList.add(cb);
-	    	   this.setCenter(cb);
-	    	   this.getChildren().add(cb);
-	    	   		
-		}
-	 
-	 
-	 
+	 this.newBox = new CheckBox(newClub.toString());
+
+	 verticalBox.getChildren().add(newBox);
+
+	SelectionHandler xHandeler = new SelectionHandler();
+	newBox.setOnAction(xHandeler);
+		    	   			 
+	checkList.add(newBox);
 	 
  }
 
@@ -111,7 +102,18 @@ public class SelectPane extends BorderPane
             //When any radio button is selected or unselected
             //the total number of members of selected clubs should be updated
             //and displayed using a label.
-        
+        	
+        	totalMembers = 0;
+        	for (int i = 0; i < checkList.size(); i++) {
+        		if (checkList.get(i).isSelected()) {
+        			
+        			totalMembers += clubList.get(i).getNumberOfMembers();
+					
+				}
+				
+			}
+        	
+        	newClubLable.setText("new: " + totalMembers);
 
      }
    } //end of SelectHandler class
