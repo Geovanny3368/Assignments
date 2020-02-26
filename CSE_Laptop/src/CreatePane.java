@@ -7,29 +7,23 @@
 
 import java.util.ArrayList;
 
-
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.event.ActionEvent;	//**Need to import
 import javafx.event.EventHandler;	//**Need to import
+import javafx.scene.control.Button;
 
 //import all other necessary javafx classes here
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.control.*;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 
-//----
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 
 public class CreatePane extends HBox
 {
@@ -64,7 +58,7 @@ public class CreatePane extends HBox
 		memberField = new TextField();
 		uniField = new TextField();
 		
-		//Button
+		//set up for button
 		clubBtn = new Button("Create a Club");
         
         //create a GridPane hold those labels & text fields.
@@ -72,24 +66,25 @@ public class CreatePane extends HBox
         //to control the spacing and gap, etc.
         //----       
         GridPane centerPane = new GridPane();
-        //centerPane.setPrefSize(100, 200);
-        centerPane.setAlignment(Pos.TOP_CENTER);      //Grid always centered 
+        centerPane.setAlignment(Pos.TOP_CENTER);     		 //Grid always centered 
         centerPane.setPadding(new Insets(10, 10, 0, 0));
         centerPane.setHgap(5);
         centerPane.setVgap(5);
-            
-        //You might need to create a sub pane to hold the button
-        //----
-
-        centerPane.add(title, 0, 0);
-        centerPane.add(titleField, 1, 0);
         
-        centerPane.add(numOfMembers, 0, 1);
+        //Components for the gridpane
+        centerPane.add(title, 0, 0);			
+        centerPane.add(titleField, 1, 0);		
+        
+        centerPane.add(numOfMembers, 0, 1);		
         centerPane.add(memberField, 1, 1);
         
         centerPane.add(university, 0, 2);
         centerPane.add(uniField, 1, 2);
+            
+        //You might need to create a sub pane to hold the button
+        //----
               
+        //Creates the area for the button 
         FlowPane bottomPane = new FlowPane();
         bottomPane.getChildren().add(clubBtn);
         bottomPane.setAlignment(Pos.TOP_CENTER);
@@ -98,16 +93,18 @@ public class CreatePane extends HBox
         bottomPane.setVgap(0);
         bottomPane.setHgap(10);
         
+        //Creates the area for the top header
         FlowPane topPane = new FlowPane();
         topPane.getChildren().add(warning);
         topPane.setAlignment(Pos.BOTTOM_LEFT);
         topPane.setPadding(new Insets(5, 0, 0, 10));
-                
+        
+        //Both panes are tossed into a borderPane  
         BorderPane leftPane = new BorderPane();
         leftPane.setTop(topPane);
         leftPane.setCenter(centerPane);
         leftPane.setBottom(bottomPane);
-
+       
         //the right half of the CreatePane is simply a TextArea object
         //Note: a ScrollPane will be added to it automatically when there are no
         //enough space
@@ -146,35 +143,10 @@ public class CreatePane extends HBox
    	    	String clubListStr = "";
    	    	int numOfMembers;
    	    	
-            
-            //when a text field is empty and the button is pushed
-            //if ( //----  )
-                //{
-                    //handle the case here
-                    
-                //}
-                //else	//for all other cases
-                //{
-                    //when a non-numeric value was entered for its number of members
-                    //and the button is pushed
-                    //you will need to use try & catch block to catch
-                    //the NumberFormatException
-                    //----
-                    
-                    //When a club of an existing club name in the list
-                    //was attempted to be added, do not add it to the list
-                    //and display a message "Club not added - duplicate"
-                    
-                    
-                    
-                    //at the end, don't forget to update the new arrayList
-                    //information on the SelectPanel
-                    //----
-                    
-                //}
-   	    	
+   	    	//if statement the checks if any field is empty
    	    	if (titleField.getText().isEmpty() || memberField.getText().isEmpty()
    	    			|| uniField.getText().isEmpty()) {
+   	    		//Displays message if any field is empty
    	    		warning.setText("Please fill in all fields");
 			}else {
 				
@@ -186,31 +158,48 @@ public class CreatePane extends HBox
 			        //the NumberFormatException
 			        //----
 					
+					//Inits the local variables to the instance 
+					//parses the memberField to and int
 					title = titleField.getText();
 					numOfMembers = Integer.parseInt(memberField.getText());
 					university = uniField.getText();
 					
+					//Creates a Club object and it sets 
+					//the new title, #ofMembers and university 
+					//then adds it to the clubList array
 					Club createClub = new Club();
 					createClub.setClubName(title);
 					createClub.setNumberOfMembers(numOfMembers);
 					createClub.setUniversity(university);
 					clubList.add(createClub);
 					
+					//Manages the array adding the toString to any 
+					//club that has been added 
 					for (int i = 0; i < clubList.size(); i++) {
 						
 						clubListStr += clubList.get(i).toString();
 					}
 					
+					//displays the clubs that were added in the text area
 					clubDispaly.setText(clubListStr);
 					
+					//updates the updateClubList in the selectPane class
 					selectPane.updateClubList(createClub);
 					
+					//sets the text to new text
 					warning.setText("Club added");
 					
+					//Clears the textFields 
+					titleField.clear();
+					memberField.clear();
+					uniField.clear();
+					
 			}catch(NumberFormatException e){
-				
+					
+					//In case the input is not and int it shows this message
 					warning.setText("Please enter an integer for a number of members");
 				}
+				
 			}
 
       } //end of handle() method

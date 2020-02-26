@@ -5,37 +5,25 @@
 //  Description: ReviewPane displays a list of available clubs
 //  from which a user can select and compute their total number of members.
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.CheckBox;
+
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;	//**Need to import
 import javafx.event.EventHandler;	//**Need to import
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-
 
 //import all other necessary javafx classes here
 //----
 
+import javafx.scene.control.Label;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ToggleGroup;
-
 
 public class SelectPane extends BorderPane
 {
-	private Label clubLable;
-	private Label newClubLable;
-	private int totalMembers;
 	private ArrayList<Club> clubList;
-	private ArrayList<CheckBox> checkList;
+	private ArrayList<CheckBox> checkBoxList;
+	private Label topLable, bottomLable;
+	private int totalMembers;
 	private CheckBox newBox;
 	private VBox verticalBox;
 
@@ -46,10 +34,10 @@ public class SelectPane extends BorderPane
    {
    	   //initialize instance variables
        this.clubList = list;
-       this.checkList = new ArrayList<CheckBox>();
-       totalMembers = 0;
-       clubLable = new Label("Select some clubs");
-       newClubLable = new Label("Total: " + totalMembers);
+       this.checkBoxList = new ArrayList<CheckBox>();
+//       this.totalMembers = 0;
+       this.topLable = new Label("Select some clubs");
+       this.bottomLable = new Label("The total number of members for the selected club(s): 0" );
 
        //set up the layout
        //----
@@ -58,20 +46,13 @@ public class SelectPane extends BorderPane
        //create an empty pane where you can add check boxes later
        //----
        this.verticalBox = new VBox();
-//       checkPane.setSpacing(20);
-//       checkPane.getChildren().add(updateClubList(newClub);)
-
-
-       
+    
        //SelectPane is a BorderPane - add the components here
-       //----
-       
-       this.setTop(clubLable);
+       //----       
+       this.setTop(topLable);
        this.setLeft(verticalBox);
-       this.setBottom(newClubLable);
-
+       this.setBottom(bottomLable);
        
-              
    } //end of constructor
 
  //This method uses the newly added parameter Club object
@@ -85,10 +66,10 @@ public class SelectPane extends BorderPane
 
 	 verticalBox.getChildren().add(newBox);
 
-	SelectionHandler xHandeler = new SelectionHandler();
-	newBox.setOnAction(xHandeler);
+	 SelectionHandler xHandeler = new SelectionHandler();
+	 newBox.setOnAction(xHandeler);
 		    	   			 
-	checkList.add(newBox);
+	 checkBoxList.add(newBox);
 	 
  }
 
@@ -103,8 +84,8 @@ public class SelectPane extends BorderPane
             //and displayed using a label.
         	
         	totalMembers = 0;
-        	for (int i = 0; i < checkList.size(); i++) {
-        		if (checkList.get(i).isSelected()) {
+        	for (int i = 0; i < checkBoxList.size(); i++) {
+        		if (checkBoxList.get(i).isSelected()) {
         			
         			totalMembers += clubList.get(i).getNumberOfMembers();
 					
@@ -112,7 +93,7 @@ public class SelectPane extends BorderPane
 				
 			}
         	
-        	newClubLable.setText("new: " + totalMembers);
+        	bottomLable.setText("The total number of members for the selected club(s): " + totalMembers);
 
      }
    } //end of SelectHandler class
