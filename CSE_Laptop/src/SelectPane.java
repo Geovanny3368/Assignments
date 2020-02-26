@@ -37,7 +37,7 @@ public class SelectPane extends BorderPane
 	private ArrayList<Club> clubList;
 	private ArrayList<CheckBox> checkList;
 	private CheckBox newBox;
-	private VBox	verticalBox;
+	private VBox verticalBox;
 
 
    //constructor
@@ -46,8 +46,7 @@ public class SelectPane extends BorderPane
    {
    	   //initialize instance variables
        this.clubList = list;
-       
-       checkList = new ArrayList<CheckBox>();
+       this.checkList = new ArrayList<CheckBox>();
        totalMembers = 0;
        clubLable = new Label("Select some clubs");
        newClubLable = new Label("Total: " + totalMembers);
